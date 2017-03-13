@@ -14,6 +14,11 @@ app.get('/', (request, response) => {
   response.send('It\'s a secret to everyone.');
 });
 
+
+app.get('/api/new_folder/', (request, response) => {
+  response.send('It\'s a Rickety Rekt to everyone.');
+});
+
 app.listen(app.get('port'), () => {
   console.log(`${app.locals.title} is running on ${app.get('port')}.`);
 });
