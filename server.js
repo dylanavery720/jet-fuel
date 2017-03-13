@@ -1,5 +1,6 @@
 var express = require('express');
 var app = express();
+var md5 = require('md5')
 
 app.use(express.static('public'));
 
@@ -14,9 +15,9 @@ app.get('/', (request, response) => {
   response.send('It\'s a secret to everyone.');
 });
 
-
 app.get('/api/new_folder/', (request, response) => {
-  response.send('It\'s a Rickety Rekt to everyone.');
+  console.log(request.query)
+  response.json({id: request.query.folder_name});
 });
 
 app.listen(app.get('port'), () => {
