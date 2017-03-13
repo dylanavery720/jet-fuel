@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/noahpeden/jet-fuel/issues"
   },
-  "homepage": "https://github.com/noahpeden/jet-fuel#readme"
+  "homepage": "https://github.com/noahpeden/jet-fuel#readme",
+  "devDependencies": {
+    "express": "^4.15.2"
+  }
 }
