@@ -9,31 +9,31 @@ app.use(express.static('public'));
 
 app.set('port', process.env.PORT || 3000);
 app.locals.title = 'Jet Fuel'
-app.locals.folders = {}
-
-app.get('/index.html', function (req, res) {
-  res.sendFile( __dirname + "/" + "index.html" )
-})
+app.locals.folders = []
 
 app.get('/', (request, response) => {
-  response.send('It\'s a secret to everyone.')
+  response.sendFile( __dirname + "/" + "index.html" )
 })
 
-app.get('/api/new_folder/:id', (request, response) => {
+app.get('/api/folders', (request, response) => {
+  response.send({payload: app.locals.folders})
+})
+
+app.get('/api/folders/:id', (request, response) => {
   const { id } = request.params
   const message = app.locals.folders[id]
   if(message !== undefined) {
   console.log(request.params)
   response.json({id, message})
 } else {
-  response.send("holy fuck Rick")
+  response.send("Not Found")
 }
 })
 
-app.post('/api/new_folder/', (request, response) => {
-  const message = request.body.folder_name
+app.post('/api/folders/', (request, response) => {
+  const message = request.body.body
   const id = md5(message)
-  app.locals.folders[id] = message
+  app.locals.folders.push({[id]: message})
   response.json({id, message})
 })
 
