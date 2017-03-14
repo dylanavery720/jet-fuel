@@ -22,8 +22,12 @@ app.get('/', (request, response) => {
 app.get('/api/new_folder/:id', (request, response) => {
   const { id } = request.params
   const message = app.locals.folders[id]
+  if(message !== undefined) {
   console.log(request.params)
   response.json({id, message})
+} else {
+  response.send("holy fuck Rick")
+}
 })
 
 app.post('/api/new_folder/', (request, response) => {
