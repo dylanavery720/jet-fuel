@@ -32,5 +32,7 @@ folderLink.addEventListener('click', function(e){
 individualFolder.addEventListener('click', function(e){
   console.log(folderName)
   axios
-  .post(`/api/folders/${folderName}`)
+  .post(`/api/urls/${folderName}`, {
+    body: `${folderName}`
+  })
 })
