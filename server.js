@@ -19,6 +19,10 @@ app.get('/api/folders', (request, response) => {
   response.send({payload: app.locals.folders})
 })
 
+app.get('/api/folders/:name', (request, response) => {
+  response.send({payload: app.locals.folders})
+})
+
 app.get('/api/folders/:id', (request, response) => {
   const { id } = request.params
   const message = app.locals.folders[id]
@@ -33,7 +37,7 @@ app.get('/api/folders/:id', (request, response) => {
 app.post('/api/folders/', (request, response) => {
   const message = request.body.body
   const id = md5(message)
-  app.locals.folders.push({[id]: message})
+  app.locals.folders.push({message: message, id: id})
   response.json({id, message})
 })
 
