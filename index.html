@@ -8,10 +8,10 @@
   </head>
   <body>
     <h1>Jet Fuel URL Shortener</h1>
-    <form action = "http://localhost:3000/api/new_folder/" method= "POST">
-       Folder Name: <input type = "text" name = "folder_name">
-       <input type = "submit" value = "Submit">
-    </form>
+       Folder Name: <input type = "text" name = "folder_name" id="input-field">
+       <input type = "submit" value = "Submit" id="submit">
+    <ul id="folder-render" class="folder-click"></ul>
   </body>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <script src="app.js"></script>
 </html>
