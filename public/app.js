@@ -4,6 +4,7 @@ var inputVal = document.getElementById('input-field')
 var folderLink = document.querySelector('.folder-click')
 var individualFolder = document.querySelector('.individual-folder')
 var folderName;
+var urlName;
 
 submitBtn.addEventListener('click', function(){
 axios
@@ -30,9 +31,10 @@ folderLink.addEventListener('click', function(e){
 })
 
 individualFolder.addEventListener('click', function(e){
-  console.log(folderName)
+  urlName = e.target.parentNode.childNodes[2]
+  console.log(urlName)
   axios
   .post(`/api/urls/${folderName}`, {
-    body: `${folderName}`
+    body: `${urlName.value}`
   })
 })
