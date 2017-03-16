@@ -10,7 +10,7 @@ app.use(express.static('public'));
 app.set('port', process.env.PORT || 3000);
 app.locals.title = 'Jet Fuel'
 app.locals.folders = []
-app.locals.name = []
+app.locals.urls = []
 
 
 app.get('/', (request, response) => {
@@ -23,15 +23,16 @@ app.get('/api/folders', (request, response) => {
 
 app.get('/api/urls/:url', (request, response) => {
   const { url } = request.params
-  console.log(app.locals.name[url])
-  response.send(app.locals.name)
+  let newy = app.locals.urls.filter(urls => {
+      return urls.folder_id == url
+  })
+  response.send(newy)
 })
 
 app.get('/api/folders/:id', (request, response) => {
   const { id } = request.params
   const message = app.locals.folders[id]
   if(message !== undefined) {
-  console.log(request.params)
   response.json({id, message})
 } else {
   response.send("Not Found")
@@ -49,7 +50,8 @@ app.post('/api/urls/:name', (request, response) => {
   const { name } = request.params
   const url = request.body.body
   const id = md5(url)
-  app.locals.folders.push({url: url, id: id})
+  const shortUrl = id.substring(2,5)
+  app.locals.urls.push({url: url, id: id, folder_id: name, shortUrl: `http://localhost:3000/${shortUrl}`})
   response.json({id, url})
 })
 
