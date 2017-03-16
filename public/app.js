@@ -3,6 +3,7 @@ var renderArea = document.getElementById('folder-render')
 var inputVal = document.getElementById('input-field')
 var folderLink = document.querySelector('.folder-click')
 var individualFolder = document.querySelector('.individual-folder')
+var shortUrl = document.querySelector('.short-url')
 var folderName;
 var urlName;
 
@@ -30,6 +31,20 @@ folderLink.addEventListener('click', function(e){
   })
 })
 
+function returnUrl(urlN) {
+  console.log(urlN)
+  axios
+  .get(`/api/urls/${urlN}`)
+  .then(function(response){
+    console.log(response, shortUrl)
+
+    shortUrl.innerHTML = shortUrl.innerHTML +
+    response.data.reduce((acc, url) => {
+    return `<a href=${url.url}>${url.shortUrl}</a>`
+  }, "")
+})
+}
+
 individualFolder.addEventListener('click', function(e){
   urlName = e.target.parentNode.childNodes[2]
   console.log(urlName)
@@ -37,4 +52,5 @@ individualFolder.addEventListener('click', function(e){
   .post(`/api/urls/${folderName}`, {
     body: `${urlName.value}`
   })
+  returnUrl(folderName)
 })

@@ -24,7 +24,6 @@ app.get('/api/folders', (request, response) => {
 app.get('/api/urls/:url', (request, response) => {
   const { url } = request.params
   let newy = app.locals.urls.filter(urls => {
-      console.log("check",urls.url, url)
       return urls.folder_id == url
   })
   response.send(newy)
@@ -51,7 +50,8 @@ app.post('/api/urls/:name', (request, response) => {
   const { name } = request.params
   const url = request.body.body
   const id = md5(url)
-  app.locals.urls.push({url: url, id: id, folder_id: name})
+  const shortUrl = id.substring(2,5)
+  app.locals.urls.push({url: url, id: id, folder_id: name, shortUrl: `http://localhost:3000/${shortUrl}`})
   response.json({id, url})
 })
 
