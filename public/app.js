@@ -51,25 +51,6 @@ folderLink.addEventListener('click', function(e){
   .then(data => renderFolder(data))
 
   })
-// })
-
-// function folderURLs(){
-//   folderName = e.target.id;
-//
-//   axios
-//   .get(`/api/urls/${folderName}`)
-// }
-
-function returnUrl(urlN) {
-  axios
-  .get(`/api/urls/${urlN}`)
-  .then(function(response){
-      shortUrl.innerHTML =
-      response.data.reduce((acc, url) => {
-      return `<br /><a href=${url.url} class="url-link">${url.shortUrl}</a>`
-    }, "")
-  })
-}
 
 $individualFolder.on('click', '.submit-url', function(e){
   e.preventDefault()
