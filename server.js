@@ -86,10 +86,6 @@ app.post('/api/urls/:folder_id', (request, response) => {
   })
 })
 
-app.patch('/api/urls/:name', (request, response) => {
-
-})
-
 if (!module.parent) {
   app.listen(app.get('port'), () => {
     console.log(`${app.locals.title} is running on ${app.get('port')}.`);
