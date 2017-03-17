@@ -21,6 +21,11 @@ h1 {
 }
 
 .nav, li {
+  list-style: none;
   display: inline-block;
   margin: 5px;
+}
+
+.url-link {
+  margin-left: 10%;
 }
