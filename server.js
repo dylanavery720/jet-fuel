@@ -69,7 +69,7 @@ app.post('/api/urls/:name', (request, response) => {
   const url = request.body.body
   const id = md5(url)
   const shortUrl = id.substring(2,5)
-  const newUrl = {url, folder_id: name, shortUrl: `http://localhost:3000/${shortUrl}`}
+  const newUrl = {url, folder_id: name, shortUrl: `http://localhost:3000/${shortUrl}`, clicks: clicks+=1}
   database('urls').insert(newUrl)
   .then(function(){
     database('urls').select()
@@ -80,6 +80,10 @@ app.post('/api/urls/:name', (request, response) => {
       console.error('somethings wrong with db')
     });
   })
+})
+
+app.patch('/api/urls/:name', (request, response) => {
+  
 })
 
 if (!module.parent) {
