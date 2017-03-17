@@ -24,10 +24,10 @@ function renderFolders(array) {
     return $renderArea.html($renderArea.html() + `<li><button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored nav" id=${folder.id}>${folder.name}</button></li>`)})
 }
 
-function renderNewFolders() {
+function renderNewFolders(array) {
   var ren = $renderArea.html()
   $renderArea.html("")
-  folder.data.map(folder => {
+  array.data.map(folder => {
     return $renderArea.html(ren + `<li><button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored nav" id=${folder.id}>${folder.name}</button></li>`)
   })
 }
@@ -73,5 +73,7 @@ $individualFolder.on('click', '.submit-url', function(e){
 })
 
 $shortUrl.on('click', '.sort-button', function(e){
-
+  // grab urls specific to what is loaded on screen currently so ..
+ //
+ // on backend if clicks > then clicks i + 1 sort clicks
 })
