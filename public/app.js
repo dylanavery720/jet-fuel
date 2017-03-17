@@ -11,13 +11,12 @@ var sortOrder = false;
 var currentUrls;
 
 function renderUrl(folders) {
-  console.log(folders)
+  currentUrls = folders;
   let urls = folders.map(url => {
   return  `<br /><a href=${url.id} class="url-link">${url.id}</a>`
   })
- $individualFolder.html(`<h2>Folder: </h2>
-     <input type="text" id="input-url" placeholder="input a url"></input>
-   <input type="submit" class="submit-url"></input> ${urls}`)
+ $individualFolder.html(` <input type="text" id="input-url" placeholder="input a url"></input>
+   <input type="submit" class="submit-url mdl-button mdl-js-button mdl-button--raised mdl-button--accent"></input> ${urls}`)
 }
 
 
@@ -77,14 +76,7 @@ $individualFolder.on('click', '.submit-url', function(e){
   })
 })
 
-$shortUrl.on('click', '.sort-button', function(e){
-  // grab urls specific to what is loaded on screen currently so ..
- //
- // on backend if clicks > then clicks i + 1 sort clicks
-})
-
 $('.sort-date').on('click', () => {
-  // $('.url-container').children().remove()
   if (!sortOrder) {
     renderUrl(downSort('created_at'));
     sortOrder = !sortOrder;
@@ -95,7 +87,6 @@ $('.sort-date').on('click', () => {
 })
 
 $('.sort-button').on('click', () => {
-  // $('.url-container').children().remove()
   if (!sortOrder) {
     renderUrl(downSort('clicks'));
     sortOrder = !sortOrder;
