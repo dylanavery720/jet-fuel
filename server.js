@@ -19,6 +19,19 @@ app.get('/', (request, response) => {
   response.sendFile( __dirname + "/" + "index.html" )
 })
 
+app.get('/:shortUrl', (request, response) => {
+  database('urls').where('shah', request.params.shortUrl).increment('clicks', 1)
+  .then(function(){
+    database('urls').where('url', request.params.shortUrl).select()
+        .then(function(url) {
+          response.status(200).redirect('http://www.espn.com');
+        })
+        .catch(function(error) {
+          console.error(error)
+        });
+    })
+})
+
 app.get('/api/folders', (request, response) => {
   database('folders').select()
   .then(function(folders){
@@ -30,24 +43,14 @@ app.get('/api/folders', (request, response) => {
 })
 
 app.get('/api/urls/:url', (request, response) => {
-  database('urls').where('folder_id', request.params.url).select()
+    database('urls').where('folder_id', request.params.url).select()
         .then(function(urls) {
           response.status(200).json(urls);
         })
         .catch(function(error) {
           console.error('somethings wrong with redirect')
         });
-})
-
-app.get('/api/folders/:id', (request, response) => {
-  database('folders').where('id', request.params.id).select()
-        .then(function(folders) {
-          response.status(200).json(folders);
-        })
-        .catch(function(error) {
-          console.error('somethings wrong with redirect')
-        });
-})
+    })
 
 app.post('/api/folders/', (request, response) => {
   const name = request.body.body
@@ -69,7 +72,7 @@ app.post('/api/urls/:name', (request, response) => {
   const url = request.body.body
   const id = md5(url)
   const shortUrl = id.substring(2,5)
-  const newUrl = {url, folder_id: name, shortUrl: `http://localhost:3000/${shortUrl}`, clicks: clicks+=1}
+  const newUrl = {url, folder_id: name, shah: shortUrl, shortUrl: `http://localhost:3000/${shortUrl}`, clicks: 1}
   database('urls').insert(newUrl)
   .then(function(){
     database('urls').select()
@@ -83,7 +86,7 @@ app.post('/api/urls/:name', (request, response) => {
 })
 
 app.patch('/api/urls/:name', (request, response) => {
-  
+
 })
 
 if (!module.parent) {

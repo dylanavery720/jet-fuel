@@ -10,6 +10,7 @@ exports.up = function(knex, Promise) {
             table.increments('id').primary();
             table.string('url');
             table.string('folder_id');
+            table.string('shah');
             table.string('shortUrl');
             table.integer('clicks')
 
