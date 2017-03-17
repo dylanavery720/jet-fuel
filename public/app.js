@@ -7,8 +7,10 @@ var $shortUrl = $('.short-url')
 var $sortButton = $('.sort-button')
 var folderName;
 var urlName;
+var sortOrder = false;
+var currentUrls;
 
-function renderFolder(folders) {
+function renderUrl(folders) {
   console.log(folders)
   let urls = folders.map(url => {
   return  `<br /><a href=${url.id} class="url-link">${url.id}</a>`
@@ -56,7 +58,10 @@ $folderLink.on('click', function(e){
   axios
   .get(`/api/urls/${folderName}`)
   .then(response => response.data)
-  .then(data => renderFolder(data))
+  .then(data => {
+    currentUrls = data;
+    renderUrl(data)
+  })
   })
 
 $individualFolder.on('click', '.submit-url', function(e){
@@ -68,7 +73,7 @@ $individualFolder.on('click', '.submit-url', function(e){
   })
   .then((response)=> {
     $('.individual-folder').empty()
-    renderFolder(response.data)
+    renderUrl(response.data)
   })
 })
 
@@ -77,3 +82,33 @@ $shortUrl.on('click', '.sort-button', function(e){
  //
  // on backend if clicks > then clicks i + 1 sort clicks
 })
+
+$('.sort-date').on('click', () => {
+  // $('.url-container').children().remove()
+  if (!sortOrder) {
+    renderUrl(downSort('created_at'));
+    sortOrder = !sortOrder;
+  } else {
+    renderUrl(upSort('created_at'));
+    sortOrder = !sortOrder;
+  }
+})
+
+$('.sort-button').on('click', () => {
+  // $('.url-container').children().remove()
+  if (!sortOrder) {
+    renderUrl(downSort('clicks'));
+    sortOrder = !sortOrder;
+  } else {
+    renderUrl(upSort('clicks'));
+    sortOrder = !sortOrder;
+  }
+})
+
+function upSort(prop) {
+  return currentUrls.sort((a, b) => a[prop] > b[prop])
+}
+
+function downSort(prop) {
+  return currentUrls.sort((a, b) => a[prop] < b[prop]);
+}

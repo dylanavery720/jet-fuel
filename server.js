@@ -73,7 +73,7 @@ app.post('/api/urls/:folder_id', (request, response) => {
   const { folder_id } = request.params
   const {url} = request.body
   const shortUrl = md5(url).substring(2,5)
-  const newUrl = {url, folder_id, shah: shortUrl, shortUrl: `/${shortUrl}`, clicks: 0}
+  const newUrl = {url, folder_id, shah: shortUrl, shortUrl: `/${shortUrl}`, clicks: 0, created_at:new Date}
   database('urls').insert(newUrl)
   .then(function(){
     database('urls').where('folder_id', folder_id).select()
