@@ -19,12 +19,14 @@ app.get('/', (request, response) => {
   response.sendFile( __dirname + "/" + "index.html" )
 })
 
-app.get('/:shortUrl', (request, response) => {
-  database('urls').where('shah', request.params.shortUrl).increment('clicks', 1)
+app.get('/:id', (request, response) => {
+  const id = request.params.id
+  database('urls').where('id', request.params.id).increment('clicks', 1)
   .then(function(){
-    database('urls').where('url', request.params.shortUrl).select()
+    database('urls').where('id', id).select()
         .then(function(url) {
-          response.status(200).redirect(url.url);
+          console.log(url);
+          response.redirect(`http://${url[0].url}`);
         })
         .catch(function(error) {
           console.error(error)
