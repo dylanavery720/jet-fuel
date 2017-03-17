@@ -19,3 +19,8 @@ h1 {
   height: 50px;
   width: 100%;
 }
+
+.nav, li {
+  display: inline-block;
+  margin: 5px;
+}
