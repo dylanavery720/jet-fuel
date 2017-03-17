@@ -11,6 +11,7 @@ exports.up = function(knex, Promise) {
             table.string('url');
             table.string('folder_id');
             table.string('shortUrl');
+            table.integer('clicks')
 
             table.timestamps();
         })
@@ -19,7 +20,7 @@ exports.up = function(knex, Promise) {
 
 exports.down = function(knex, Promise) {
     return Promise.all([
-        knex.schema.dropTable('folders'),
-        knex.schema.dropTable('urls')
+        knex.schema.dropTable('urls'),
+        knex.schema.dropTable('folders')
     ])
 };

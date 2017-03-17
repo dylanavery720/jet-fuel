@@ -3,7 +3,7 @@ var renderArea = document.getElementById('folder-render')
 var inputVal = document.getElementById('input-field')
 var folderLink = document.querySelector('.folder-click')
 var $individualFolder = $('.individual-folder')
-var shortUrl = document.querySelector('.short-url')
+var $shortUrl = $('.short-url')
 var folderName;
 var urlName;
 var idCount = 1;
@@ -15,9 +15,9 @@ function returnUrl(urlN) {
   .then(function(response){
       console.log(response, shortUrl)
 
-      shortUrl.innerHTML = shortUrl.innerHTML +
+      $shortUrl.innerHTML = $shortUrl.innerHTML +
       response.data.reduce((acc, url) => {
-      return `<a href=${url.url}>${url.shortUrl}</a>`
+      return `<a class="url-link" href=${url.url}>${url.shortUrl}</a>`
     }, "")
   })
 }
@@ -58,4 +58,11 @@ $individualFolder.on('click', '.submit-url', function(e){
     body: `${urlName.value}`
   })
   returnUrl(folderName)
+})
+
+$shortUrl.on('click', '.url-link', function(e){
+  axios
+    .patch(`/urls/${folderName}`, {
+      
+    })
 })
