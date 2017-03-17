@@ -26,10 +26,9 @@ axios
     body: $inputVal.val()
   })
   .then((folder)=>{
-    console.log(folder)
+    var ren = $renderArea.html()
+    $renderArea.html("")
     folder.data.map(folder => {
-      var ren = $renderArea.html()
-      $renderArea.empty()
       return $renderArea.html(ren + `<li><button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored nav" id=${folder.id}>${folder.name}</button></li>`)
     })
   })
