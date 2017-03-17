@@ -73,5 +73,7 @@ $individualFolder.on('click', '.submit-url', function(e){
 })
 
 $shortUrl.on('click', '.sort-button', function(e){
-
+  // grab urls specific to what is loaded on screen currently so ..
+ // 
+ // on backend if clicks > then clicks i + 1 sort clicks
 })
