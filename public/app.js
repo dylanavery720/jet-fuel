@@ -8,7 +8,7 @@ var $shortUrl = $('.short-url')
 var folderName;
 var urlName;
 var shortUrl;
-var idCount = 1;
+
 
 
 
@@ -17,24 +17,9 @@ $(function() {
     .get("/api/folders/")
     .then((folder)=>{
       folder.data.map(folder => {
-        return renderArea.innerHTML = renderArea.innerHTML + `<li><button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored nav" id=${idCount}>${folder.name}</button></li>`})
-      })
-      .then(()=> {
-        idCount++
+        return renderArea.innerHTML = renderArea.innerHTML + `<li><button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored nav" id=${folder.id}>${folder.name}</button></li>`})
       })
 })
-
-function returnUrl(urlN) {
-
-  axios
-  .get(`/api/urls/${urlN}`)
-  .then(function(response){
-      shortUrl.innerHTML =
-      response.data.reduce((acc, url) => {
-      return `<a href=${url.url} class="url-link">${url.shortUrl}</a>`
-    }, "")
-  })
-}
 
 submitBtn.addEventListener('click', function(){
 axios
@@ -42,25 +27,23 @@ axios
     body: inputVal.value
   })
   .then(()=>{
-    return renderArea.innerHTML = renderArea.innerHTML + `<li><button id=${idCount}>${inputVal.value}</button></li>`})
-    .then(()=> {
-      idCount++
+    folder.data.map(folder => {
+      return renderArea.innerHTML = renderArea.innerHTML + `<li><button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored nav" id=${folder.id}>${folder.name}</button></li>`})
     })
 })
 
-function renderFolder(array) {
-  console.log(array)
-  let newAr = array.map(url => {
+function renderFolder(folders) {
+  console.log(folders)
+  let urls = folders.map(url => {
   return  `<br /><a href=${url.url} class="url-link">${url.shortUrl}</a>`
   })
 
  $individualFolder.html(`<h2>Folder: </h2>
      <input type="text" id="input-url" placeholder="input a url"></input>
-   <input type="submit" class="submit-url"></input> ${newAr}`)
+   <input type="submit" class="submit-url"></input> ${urls}`)
 }
 
 folderLink.addEventListener('click', function(e){
-  console.log(e)
  folderName = e.target.id;
   axios
   .get(`/api/urls/${folderName}`)
@@ -77,14 +60,28 @@ folderLink.addEventListener('click', function(e){
 //   .get(`/api/urls/${folderName}`)
 // }
 
+function returnUrl(urlN) {
+  axios
+  .get(`/api/urls/${urlN}`)
+  .then(function(response){
+      shortUrl.innerHTML =
+      response.data.reduce((acc, url) => {
+      return `<br /><a href=${url.url} class="url-link">${url.shortUrl}</a>`
+    }, "")
+  })
+}
+
 $individualFolder.on('click', '.submit-url', function(e){
   e.preventDefault()
-  urlName = e.target.parentNode.childNodes[2]
+  urlName = $('#input-url').val()
   axios
   .post(`/api/urls/${folderName}`, {
-    body: `${urlName.value}`
+    url: `${urlName}`
   })
-  returnUrl(folderName)
+  .then((response)=> {
+    $('.individual-folder').empty()
+    renderFolder(response.data)
+  })
 })
 
 $shortUrl.on('click', '.url-link', function(e){

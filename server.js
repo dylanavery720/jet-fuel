@@ -24,7 +24,7 @@ app.get('/:shortUrl', (request, response) => {
   .then(function(){
     database('urls').where('url', request.params.shortUrl).select()
         .then(function(url) {
-          response.status(200).redirect('http://www.espn.com');
+          response.status(200).redirect(url.url);
         })
         .catch(function(error) {
           console.error(error)
@@ -67,15 +67,14 @@ app.post('/api/folders/', (request, response) => {
   })
 })
 
-app.post('/api/urls/:name', (request, response) => {
-  const { name } = request.params
-  const url = request.body.body
-  const id = md5(url)
-  const shortUrl = id.substring(2,5)
-  const newUrl = {url, folder_id: name, shah: shortUrl, shortUrl: `http://localhost:3000/${shortUrl}`, clicks: 1}
+app.post('/api/urls/:folder_id', (request, response) => {
+  const { folder_id } = request.params
+  const {url} = request.body
+  const shortUrl = md5(url).substring(2,5)
+  const newUrl = {url, folder_id, shah: shortUrl, shortUrl: `/${shortUrl}`, clicks: 0}
   database('urls').insert(newUrl)
   .then(function(){
-    database('urls').select()
+    database('urls').where('folder_id', folder_id).select()
     .then(function(urls){
       response.status(200).json(urls);
     })
