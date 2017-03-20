@@ -15,7 +15,7 @@ const renderUrl = (folders) => {
   currentUrls = folders;
   let urls = folders.map(url => {
     let shorty = String(Math.random(url.id) * 10000)
-  return  `<br/><a href=${url.id} class="url-link">/${shorty.substring(1,4)}</a>
+  return  `<br/><a href=${url.id} class="url-link">/${shorty.substring(1,3)}</a>
               <h4>*Created At: ${url.created_at.substring(1,10)}, </h4>
               <h4>Clicks: ${url.clicks}</h4>`
   })
