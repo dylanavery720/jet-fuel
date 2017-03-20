@@ -1,47 +1,64 @@
-var $submitBtn = $('#submit')
-var $renderArea = $('#folder-render')
-var $inputVal = $('#input-field')
-var $folderLink = $('.folder-click')
-var $individualFolder = $('.individual-folder')
-var $shortUrl = $('.short-url')
-var $sortButton = $('.sort-button')
-var folderName;
-var urlName;
-var sortOrder = false;
-var currentUrls;
+const $submitBtn = $('#submit')
+const $renderArea = $('#folder-render')
+const $inputVal = $('#input-field')
+const $folderLink = $('.folder-click')
+const $individualFolder = $('.individual-folder')
+const $sortButton = $('.sort-button')
+const $sortDate = $('.sort-date')
 
-function renderUrl(folders) {
+let folderName;
+let urlName;
+let sortOrder = false;
+let currentUrls;
+
+const renderUrl = (folders) => {
   currentUrls = folders;
   let urls = folders.map(url => {
-  return  `<br /><a href=${url.id} class="url-link">${url.id}</a>`
+    let shorty = String(Math.random(url.id) * 10000)
+  return  `<br/><a href=${url.id} class="url-link">/${shorty.substring(1,3)}</a>
+              <h4>*Created At: ${url.created_at.substring(1,10)}, </h4>
+              <h4>Clicks: ${url.clicks}</h4>`
   })
  $individualFolder.html(` <input type="text" id="input-url" placeholder="input a url"></input>
    <input type="submit" class="submit-url mdl-button mdl-js-button mdl-button--raised mdl-button--accent"></input> ${urls}`)
+   showSort()
+
 }
 
 
-function renderFolders(array) {
+const renderFolders = (array) => {
   array.data.map(folder => {
     return $renderArea.html($renderArea.html() + `<li><button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored nav" id=${folder.id}>${folder.name}</button></li>`)})
 }
 
-function renderNewFolders(array) {
-  var ren = $renderArea.html()
+const renderNewFolders = (array) => {
+  const ren = $renderArea.html()
   $renderArea.html("")
   array.data.map(folder => {
     return $renderArea.html(ren + `<li><button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored nav" id=${folder.id}>${folder.name}</button></li>`)
   })
 }
 
-$(function() {
+const hideSort = () => {
+  $sortButton.hide()
+  $sortDate.hide()
+}
+
+const showSort = () => {
+  $sortButton.show()
+  $sortDate.show()
+}
+
+$(() => {
   axios
     .get("/api/folders/")
     .then((folder)=>{
+      hideSort()
       renderFolders(folder)
     })
 })
 
-$submitBtn.on('click', function(){
+$submitBtn.on('click', () => {
 axios
   .post("/api/folders/", {
     body: $inputVal.val()
@@ -52,7 +69,7 @@ axios
 })
 
 
-$folderLink.on('click', function(e){
+$folderLink.on('click', (e) => {
  folderName = e.target.id;
   axios
   .get(`/api/urls/${folderName}`)
@@ -63,7 +80,7 @@ $folderLink.on('click', function(e){
   })
   })
 
-$individualFolder.on('click', '.submit-url', function(e){
+$individualFolder.on('click', '.submit-url', (e) => {
   e.preventDefault()
   urlName = $('#input-url').val()
   axios
@@ -76,7 +93,7 @@ $individualFolder.on('click', '.submit-url', function(e){
   })
 })
 
-$('.sort-date').on('click', () => {
+$sortDate.on('click', () => {
   if (!sortOrder) {
     renderUrl(downSort('created_at'));
     sortOrder = !sortOrder;
@@ -86,7 +103,7 @@ $('.sort-date').on('click', () => {
   }
 })
 
-$('.sort-button').on('click', () => {
+$sortButton.on('click', () => {
   if (!sortOrder) {
     renderUrl(downSort('clicks'));
     sortOrder = !sortOrder;
@@ -96,10 +113,10 @@ $('.sort-button').on('click', () => {
   }
 })
 
-function upSort(prop) {
+const upSort = (prop) => {
   return currentUrls.sort((a, b) => a[prop] > b[prop])
 }
 
-function downSort(prop) {
+const downSort = (prop) => {
   return currentUrls.sort((a, b) => a[prop] < b[prop]);
 }
