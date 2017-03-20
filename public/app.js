@@ -14,7 +14,9 @@ let currentUrls;
 const renderUrl = (folders) => {
   currentUrls = folders;
   let urls = folders.map(url => {
-  return  `<br /><a href=${url.id} class="url-link">${url.id}</a>`
+  return  `<br/><a href=${url.id} class="url-link"> /${url.id}</a>
+              <h4>*Created At: ${url.created_at.substring(1,10)}, </h4>
+              <h4>Clicks: ${url.clicks}</h4>`
   })
  $individualFolder.html(` <input type="text" id="input-url" placeholder="input a url"></input>
    <input type="submit" class="submit-url mdl-button mdl-js-button mdl-button--raised mdl-button--accent"></input> ${urls}`)
