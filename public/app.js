@@ -4,6 +4,7 @@ const $inputVal = $('#input-field')
 const $folderLink = $('.folder-click')
 const $individualFolder = $('.individual-folder')
 const $sortButton = $('.sort-button')
+const $sortDate = $('.sort-date')
 
 let folderName;
 let urlName;
@@ -17,6 +18,8 @@ const renderUrl = (folders) => {
   })
  $individualFolder.html(` <input type="text" id="input-url" placeholder="input a url"></input>
    <input type="submit" class="submit-url mdl-button mdl-js-button mdl-button--raised mdl-button--accent"></input> ${urls}`)
+   showSort()
+
 }
 
 
@@ -33,10 +36,21 @@ const renderNewFolders = (array) => {
   })
 }
 
+const hideSort = () => {
+  $sortButton.hide()
+  $sortDate.hide()
+}
+
+const showSort = () => {
+  $sortButton.show()
+  $sortDate.show()
+}
+
 $(() => {
   axios
     .get("/api/folders/")
     .then((folder)=>{
+      hideSort()
       renderFolders(folder)
     })
 })
@@ -76,7 +90,7 @@ $individualFolder.on('click', '.submit-url', (e) => {
   })
 })
 
-$('.sort-date').on('click', () => {
+$sortDate.on('click', () => {
   if (!sortOrder) {
     renderUrl(downSort('created_at'));
     sortOrder = !sortOrder;
@@ -86,7 +100,7 @@ $('.sort-date').on('click', () => {
   }
 })
 
-$('.sort-button').on('click', () => {
+$sortButton.on('click', () => {
   if (!sortOrder) {
     renderUrl(downSort('clicks'));
     sortOrder = !sortOrder;
